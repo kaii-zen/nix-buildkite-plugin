@@ -1,0 +1,3 @@
+#!/bin/bash
+
+nix-shell --pure --run "${BUILDKITE_COMMAND}"
