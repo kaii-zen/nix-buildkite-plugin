@@ -1,9 +1,7 @@
 #!/bin/bash
 
-if [[ ${BUILDKITE_COMMAND} =~ ^nix(-[[:alpha:]]+)? ]]; then
-  echo HERE
+if [[ ${BUILDKITE_COMMAND} =~ ^nix(-[[:alpha:]]+)? || ${BUILDKITE_PLUGIN_NIX_SKIP_SHELL} == true ]]; then
   eval ${BUILDKITE_COMMAND}
 else
-echo THERE
   nix-shell --pure --run "${BUILDKITE_COMMAND}"
 fi

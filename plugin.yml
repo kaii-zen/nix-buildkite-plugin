@@ -1,3 +1,9 @@
 name: Nix
 description: Run commands in nix-shell
 author: https://github.com/kreisys
+requirements:
+  - nix
+configuration:
+  properties:
+    skip-shell:
+      type: boolean
