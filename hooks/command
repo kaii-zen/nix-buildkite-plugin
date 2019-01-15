@@ -3,5 +3,5 @@
 if [[ ${BUILDKITE_COMMAND} =~ ^nix(-[[:alpha:]]+)? || ${BUILDKITE_PLUGIN_NIX_SKIP_SHELL} == true ]]; then
   eval ${BUILDKITE_COMMAND}
 else
-  nix-shell --pure --run "${BUILDKITE_COMMAND}"
+  nix-shell --pure --keep BUILDKITE_COMMIT --run "${BUILDKITE_COMMAND}"
 fi
