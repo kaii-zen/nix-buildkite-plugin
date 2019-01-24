@@ -3,7 +3,10 @@ description: Run commands in nix-shell
 author: https://github.com/kreisys
 requirements:
   - nix
+  - nix-shell
 configuration:
   properties:
     skip-shell:
       type: boolean
+    binary-cache:
+      type: string

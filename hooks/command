@@ -3,5 +3,8 @@
 if [[ ${BUILDKITE_COMMAND} =~ ^nix(-[[:alpha:]]+)? || ${BUILDKITE_PLUGIN_NIX_SKIP_SHELL} == true ]]; then
   eval ${BUILDKITE_COMMAND}
 else
+  if [[ ${BUILDKITE_COMMAND} =~ ^/nix/store/ && -n ${BUILDKITE_PLUGIN_NIX_BINARY_CACHE} ]]; then
+    nix copy --from ${BUILDKITE_PLUGIN_NIX_BINARY_CACHE} ${BUILDKITE_COMMAND}
+  fi
   nix-shell --pure $(env | grep '^BUILDKITE_' | cut -f1 -d= | xargs -n1 echo --keep) --run "${BUILDKITE_COMMAND}"
 fi
