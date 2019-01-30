@@ -5,7 +5,7 @@ set -eo pipefail
 BIN_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
 binary_cache="s3://benbria-nix-cache?region=us-east-1"
-pipeline=`nix-build --no-out-link --show-trace .buildkite/pipeline.nix`
+pipeline=`nix-build --no-out-link --show-trace .buildkite/pipeline.nix --arg mkPipeline "(import <nixpkgs> {}).callPackage $(realpath $BIN_DIR/../nix/make-pipeline.nix) {}"`
 
 nix copy --to $binary_cache $pipeline
 
