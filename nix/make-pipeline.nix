@@ -7,14 +7,15 @@ let
     pluginNixBinaryCache  = getEnv "BUILDKITE_PLUGIN_NIX_BINARY_CACHE";
   };
 
-  nixPluginVersion = "v1.5.0";
+  nixPluginVersion = "v2.1.0";
   artifactPath     = ".buildkite/artifacts";
 
-  mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], extractArtifacts ? true }:
+  mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], skip ? false, extractArtifacts ? true }:
   assert (with builtins; all isList [ plugins requires produces ]);
   assert builtins.isBool extractArtifacts;
+  assert (builtins.isBool skip || builtins.isString skip);
   {
-    inherit label;
+    inherit label skip;
     command = writeScript name ''
       #!${bashInteractive}/bin/bash
 
