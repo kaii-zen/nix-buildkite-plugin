@@ -1,7 +1,13 @@
 #!/bin/bash
 
+set -ueo pipefail
+
 USER=${USER:-buildkite-agent}
 
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
+
+HOOKS_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+
+export PATH="$PATH:$HOOKS_DIR/../bin"

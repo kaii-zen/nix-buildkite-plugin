@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+BIN_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+
+binary_cache="s3://benbria-nix-cache?region=us-east-1"
+pipeline=`nix-build --no-out-link --show-trace .buildkite/pipeline.nix`
+
+nix copy --to $binary_cache $pipeline
+
+# This is a failsafe in case we already have those paths in the binary cache without the proper sigs
+nix copy-sigs --recursive --store $binary_cache --substituter daemon $pipeline
+
+buildkite-agent pipeline upload $pipeline
