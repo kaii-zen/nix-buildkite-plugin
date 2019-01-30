@@ -4,10 +4,12 @@ let
   buildkite = with builtins; {
     pullRequest           = getEnv "BUILDKITE_PULL_REQUEST";
     branch                = getEnv "BUILDKITE_BRANCH";
+    commit                = getEnv "BUILDKITE_COMMIT";
+    tag                   = getEnv "BUILDKITE_TAG";
     pluginNixBinaryCache  = getEnv "BUILDKITE_PLUGIN_NIX_BINARY_CACHE";
   };
 
-  nixPluginVersion = "v2.1.0";
+  nixPluginVersion = "v2.2.0";
   artifactPath     = ".buildkite/artifacts";
 
   mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], skip ? false, extractArtifacts ? true }:
