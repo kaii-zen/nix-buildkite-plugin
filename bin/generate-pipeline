@@ -6,7 +6,7 @@ BIN_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 
 binary_cache=${BUILDKITE_PLUGIN_NIX_BINARY_CACHE}
 
-pipeline=`nix-build --no-out-link --show-trace ${1-.buildkite/pipeline.nix} --arg mkPipeline "(import <nixpkgs> {}).callPackage $(realpath $BIN_DIR/../nix/make-pipeline.nix) {}"`
+pipeline=`nix-build --no-out-link --show-trace ${1-.buildkite/pipeline.nix} --arg pkgs 'import <nixpkgs> {}' --arg mkPipeline "(import <nixpkgs> {}).callPackage $(realpath $BIN_DIR/../nix/make-pipeline.nix) {}"`
 
 nix copy --to $binary_cache $pipeline
 
