@@ -4,7 +4,7 @@ let
   buildkite = with builtins; {
     pullRequest           = getEnv "BUILDKITE_PULL_REQUEST";
     branch                = getEnv "BUILDKITE_BRANCH";
-    plugin.nixBinaryCache = getEnv "BUILDKITE_PLUGIN_NIX_BINARY_CACHE";
+    pluginNixBinaryCache  = getEnv "BUILDKITE_PLUGIN_NIX_BINARY_CACHE";
   };
 
   nixPluginVersion = "v1.5.0";
@@ -36,7 +36,7 @@ let
 
     plugins = [{
       "https://github.com/kreisys/nix-buildkite-plugin#${nixPluginVersion}" = {
-        binary-cache = buildkite.plugin.nixBinaryCache;
+        binary-cache = buildkite.pluginNixBinaryCache;
       };
     } {
       "artifacts#v1.2.0" = {
