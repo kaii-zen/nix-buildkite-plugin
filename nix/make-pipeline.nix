@@ -8,8 +8,7 @@ let
   };
 
   nixPluginVersion = "v1.5.0";
-  nixBinaryCache = "s3://benbria-nix-cache";
-  artifactPath = ".buildkite/artifacts";
+  artifactPath     = ".buildkite/artifacts";
 
   mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], extractArtifacts ? true }:
   assert (with builtins; all isList [ plugins requires produces ]);
