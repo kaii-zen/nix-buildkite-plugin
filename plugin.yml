@@ -10,3 +10,5 @@ configuration:
       type: boolean
     binary-cache:
       type: string
+  required:
+    - binary-cache
