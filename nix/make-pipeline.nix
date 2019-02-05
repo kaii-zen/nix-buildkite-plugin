@@ -1,13 +1,7 @@
-{ lib, bashInteractive, writeText, writeScript }:
+{ buildkiteEnvVars, pkgs, lib, bashInteractive, writeText, writeScript }:
 
 let
-  buildkite = with builtins; {
-    pullRequest           = getEnv "BUILDKITE_PULL_REQUEST";
-    branch                = getEnv "BUILDKITE_BRANCH";
-    commit                = getEnv "BUILDKITE_COMMIT";
-    tag                   = getEnv "BUILDKITE_TAG";
-    pluginNixBinaryCache  = getEnv "BUILDKITE_PLUGIN_NIX_BINARY_CACHE";
-  };
+  inherit (import ./buildkite-env.nix { envVarNames = buildkiteEnvVars; prefix = "buildkite"; }) buildkite;
 
   nixPluginVersion = "v2.2.0";
   artifactPath     = ".buildkite/artifacts";
