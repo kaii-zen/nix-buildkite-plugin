@@ -8,8 +8,8 @@ else
   fi
 
   if [[ ${BUILDKITE_PLUGIN_NIX_NO_PURE} == true ]]; then
-    nix-shell --pure $(env | grep '^BUILDKITE_' | cut -f1 -d= | xargs -n1 echo --keep) --run "${BUILDKITE_COMMAND}"
-  else
     nix-shell --run "${BUILDKITE_COMMAND}"
+  else
+    nix-shell --pure $(env | grep '^BUILDKITE_' | cut -f1 -d= | xargs -n1 echo --keep) --run "${BUILDKITE_COMMAND}"
   fi
 fi
