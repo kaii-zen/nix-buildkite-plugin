@@ -3,12 +3,13 @@
 set -eo pipefail
 
 BIN_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+PLUGIN_VERSION=$(cd $BIN_DIR; git describe --tags --exact-match 2>/dev/null || git rev-parse HEAD)
 
 binary_cache=${BUILDKITE_PLUGIN_NIX_BINARY_CACHE}
 
 pipeline=$(nix-build --no-out-link --show-trace ${1-.buildkite/pipeline.nix} \
-  --arg       pkgs  'import <nixpkgs> {}' \
-  --arg mkPipeline "(import <nixpkgs> {}).callPackage $(realpath $BIN_DIR/../nix/make-pipeline.nix) { buildkiteEnvVars = [ $(env | grep -i "^BUILDKITE_" | cut -f1 -d= | xargs -I% echo '"%"') ]; }" )
+  --arg       pkgs 'import <nixpkgs> {}' \
+  --arg mkPipeline "(import <nixpkgs> {}).callPackage $(realpath $BIN_DIR/../nix/make-pipeline.nix) { pluginVersion = \"$PLUGIN_VERSION\"; buildkiteEnvVars = [ $(env | grep -i "^BUILDKITE_" | cut -f1 -d= | xargs -I% echo '"%"') ]; }" )
 
 nix copy --to $binary_cache $pipeline
 

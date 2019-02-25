@@ -1,9 +1,8 @@
-{ buildkiteEnvVars, pkgs, lib, bashInteractive, writeText, writeScript }:
+{ pluginVersion, buildkiteEnvVars, pkgs, lib, bashInteractive, writeText, writeScript }:
 
 let
   inherit (import ./buildkite-env.nix { envVarNames = buildkiteEnvVars; prefix = "buildkite"; }) buildkite;
 
-  nixPluginVersion = "v2.2.0";
   artifactPath     = ".buildkite/artifacts";
 
   mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], skip ? false, extractArtifacts ? true }:
@@ -31,7 +30,7 @@ let
     retry.automatic = true;
 
     plugins = [{
-      "https://github.com/kreisys/nix-buildkite-plugin#${nixPluginVersion}" = {
+      "https://github.com/kreisys/nix-buildkite-plugin#${pluginVersion}" = {
         binary-cache = buildkite.pluginNixBinaryCache;
       };
     } {
