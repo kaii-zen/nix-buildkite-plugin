@@ -5,7 +5,7 @@ let
 
   artifactPath     = ".buildkite/artifacts";
 
-  mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], skip ? false, extractArtifacts ? true }:
+  mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], noPure ? false, skip ? false, extractArtifacts ? true }:
   assert (with builtins; all isList [ plugins requires produces ]);
   assert builtins.isBool extractArtifacts;
   assert (builtins.isBool skip || builtins.isString skip);
@@ -32,6 +32,7 @@ let
     plugins = [{
       "https://github.com/kreisys/nix-buildkite-plugin#${pluginVersion}" = {
         binary-cache = buildkite.pluginNixBinaryCache;
+        no-pure = noPure;
       };
     } {
       "artifacts#v1.2.0" = {
