@@ -6,6 +6,8 @@ requirements:
   - nix-shell
 configuration:
   properties:
+    no-pure:
+      type: boolean
     skip-shell:
       type: boolean
     binary-cache:
