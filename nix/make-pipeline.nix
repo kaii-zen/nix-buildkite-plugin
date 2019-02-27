@@ -29,6 +29,8 @@ let
 
     retry.automatic = true;
 
+    timeout_in_minutes = 60;
+
     plugins = [{
       "https://github.com/kreisys/nix-buildkite-plugin#${pluginVersion}" = {
         binary-cache = buildkite.pluginNixBinaryCache;
