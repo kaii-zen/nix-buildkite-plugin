@@ -5,12 +5,21 @@ let
 
   artifactPath     = ".buildkite/artifacts";
 
-  mkStep = name: { label ? name, command, plugins ? [], requires ? [], produces ? [], noPure ? false, skip ? false, extractArtifacts ? true }:
+  mkStep = name: {
+    command,
+    label            ? name,
+    plugins          ? [],
+    requires         ? [],
+    produces         ? [],
+    noPure           ? false,
+    retry            ? { automatic = true; },
+    skip             ? false,
+    extractArtifacts ? true }:
   assert (with builtins; all isList [ plugins requires produces ]);
   assert builtins.isBool extractArtifacts;
   assert (builtins.isBool skip || builtins.isString skip);
   {
-    inherit label skip;
+    inherit label retry skip;
     command = writeScript name ''
       #!${bashInteractive}/bin/bash
 
@@ -26,8 +35,6 @@ let
 
       ${command}
     '';
-
-    retry.automatic = true;
 
     timeout_in_minutes = 60;
 
